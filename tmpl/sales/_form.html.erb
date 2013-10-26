@@ -1,0 +1,44 @@
+<%= form_for @sale do |f| %>
+	<% if @sale.errors.any? %>
+		<div id="errorExplanaation">
+			<h2><%= pluralize(@sale.errors.count, "error") %> prohibited this sale from being saved: 
+			</h2>
+			<ul>
+				<% @sale.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+
+	<table>
+		<tr>
+			<td><%= f.label :'id' %></td>
+			<td><%= f.number_field :id, :readonly => true %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :"Quantity" %></td>
+			<td><%= f.number_field :qty %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :"Item Name" %></td>
+			<td><%= f.text_field :item_name, size: 30 %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :'Sold Price' %></td>
+			<td><%= f.number_field :sold_price %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :'Quality' %></td>
+			<td><%= f.number_field :quality %></td>
+		</tr>
+		<tr>
+			<td><%= f.label :'Date' %></td>
+			<td><%= f.date_select :date %></td>
+		</tr>
+	</table>
+
+	<p>
+		<%= f.submit %> <%= button_to 'Cancel', sales_path, :method => :get %>
+	</p>
+<% end %>

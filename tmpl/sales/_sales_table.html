@@ -1,0 +1,39 @@
+
+{{ define "title" }}
+<p>this just defines a totally other template just like salesTable. I'm sure that must be cool.</p>
+{{ end }}
+{{ define "salesTable" }}
+<div class="pageBody">
+
+	<table class='basicTable'>
+		<tr>
+			<th class='dataColumn'>Qty.</th>
+			<th class='dataColumn'>Item Name</th>
+			<th class='dataColumn'>Sold Price</th>
+			<th class='dataColumn'>Quality</th>
+			<th class='dataColumn'>Id</th>
+			<th class='dataColumn'>   </th>
+			<th class='buttonColumn'></th>
+			<th class='buttonColumn'></th>
+			<th class='buttonColumn'></th>
+		</tr>
+		{{ range . }}
+			<tr>
+				<td class='dataColumn columnRight'>{{ .Qty }}</td>
+				<td class='dataColumn'>{{ .ItemName }}</td>
+				<td class='dataColumn columnRight'>{{.SoldPrice}}</td>
+				<td class='dataColumn columnRight'> {{.Quality}} </td>
+				<td class='dataColumn'>{{.Id}} </td>
+				<td class='dataColumn'></th>
+				<td class='buttonColumn'><div class='button'>Show</div></td>
+				<td class='buttonColumn'><div class='button'>Edit</div></td>
+				<td class='buttonColumn'><div class='button'>Destroy</div></td>
+			</tr>
+		{{ end }}
+		<tr><td colspan=9><div class='newItemTableBottom'>
+			<span class='button bigbutton'>New Sale</span>
+		</div></td></tr>
+	</table>
+	
+</div>
+{{ end }}
