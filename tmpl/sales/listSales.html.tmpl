@@ -1,0 +1,64 @@
+{{ define "listSales" }}
+{{ template "pageHeader" . }}
+	<table class="pure-table pure-table-horizontal" id="listSalesTable">
+		<tr>
+			<td colspan=9>
+				<a href="/sale/compose" class='newItemButton'>
+			    	<i class="fa fa-plus fa-fw"></i>
+			    	New Sale
+				</a>
+			</td>
+		</tr>
+		<tr>
+			<th class='dataColumn'>Qty.</th>
+			<th class='dataColumn'>Item Name</th>
+			<th class='dataColumn'>Sold Price</th>
+			<th class='dataColumn'>Quality</th>
+			<th class='dataColumn'>Id</th>
+			<th class='dataColumn'>   </th>
+			<th class='buttonColumn'></th>
+			<th class='buttonColumn'></th>
+		</tr>
+		{{ range . }}
+		<tr>
+			<td class='dataColumn columnRight'>{{ .Qty }}</td>
+			<td class='dataColumn'>{{ .ItemName }}</td>
+			<td class='dataColumn columnRight'>{{.SoldPrice}}</td>
+			<td class='dataColumn columnRight'> {{.Quality}} </td>
+			<td class='dataColumn columnRight'>{{.Id}} </td>
+			<td class='dataColumn'></th>
+			<td class='buttonColumn'><i class="fa fa-pencil-square-o fa-lg salesTableEditButton" data-sale-id="{{.Id}}"/></td>
+			<td class="buttonColumn"><i class="fa fa-times fa-lg salesTableDeleteButton" data-sale-id="{{.Id}}"/></td>
+		</tr>
+		{{ end }}
+	</table>
+	
+
+{{ template "pageFooterTop" . }}
+
+<!-- **Gonna Inline this**
+	<script src="/assets/js/listSales.js" data-dojo-config="async: true"></script>
+-->
+
+<script>
+require(["dojo/dom-attr", "dojo/on", "dojo/dom", "dojo/query", "dojo/domReady!"],
+	    function(domAttr, on, dom) {
+	 
+	        var myObject = {
+	            id: "myObject",
+	            onClick: function(evt){
+	                alert("saleId: " + domAttr.get(evt.target, "data-sale-id"));
+	            }
+	        };
+	        var table = dom.byId("listSalesTable");
+	        on(table, ".salesTableEditButton:click", myObject.onClick);
+	        on(table, ".salesTableDeleteButton:click", myObject.onClick);
+
+	        //query(".salesTableEditButton").on("click", myObject.onClick);
+	        //query(".salesTableDeleteButton").on("click", lang.hitch(myObject, "onClick"));
+	 
+	});
+</script>
+
+{{ template "pageFooterBottom" . }}
+{{ end }}

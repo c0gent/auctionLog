@@ -1,0 +1,95 @@
+{{ define "pageHeader" }}<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="shortcut icon" href="/public/images/favicon.ico">
+
+	<title>Auction Log - Market History</title>
+
+	<script>
+		var dojoConfig = {
+		    baseUrl: "/assets/",
+		    tlmSiblingOfDojo: false,
+		    packages: [
+		        { name: "dojo", location: "vendor/dojo" },
+		        { name: "dijit", location: "vendor/dijit" },
+		        { name: "dojox", location: "vendor/dojox" },
+		        { name: "js", location: "js", main: "auctionLog" }
+		    ]
+		};
+	</script>
+
+	
+	<link rel="stylesheet" href="/assets/vendor/pure/pure-min.css">
+	<link rel="stylesheet" href="/assets/css/style.css">
+	<link rel="stylesheet" href="/assets/vendor/font-awesome-4.0.3/css/font-awesome.css">
+	<!-- **Font Awesome is just too slow**
+		<link rel="stylesheet" href="/assets/vendor/font-awesome-4.0.3/css/font-awesome.css">
+	-->
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="../../assets/js/html5shiv.js"></script>
+	<script src="../../assets/js/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body>
+
+  <!-- Fixed navbar -->
+<div class="content">
+	<header class="header">
+		<div class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
+			<a href="#" class="pure-menu-heading">Auction Log</a>
+			<ul>
+				<li><a href="/sales/list">Home</a></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</div>
+	</header>
+
+
+<div id="contentTemplate">
+{{ end }}
+
+{{ define "pageFooterTop" }}
+</div>
+
+<footer class="footer">
+	<div class="pure-g-r">
+		<div class="pure-u-1-2">
+			<a href="#" id="copyr" class="copyr">&copy;Nick Sanders Productions</a>
+		</div>
+		<div class="pure-u-1-2">
+			<div class="bottom-nav">
+				<nav class="pure-menu pure-menu-open pure-menu-horizontal">
+					<ul>
+						<li><a href="/about">About</a></li>
+						<li><a href="/contact">Contact</a></li>
+						<li><a href="#">News</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div> 
+	</div>
+</footer>
+
+ 	<script src="/assets/vendor/dojo/dojo.js" data-dojo-config="async: true"></script>
+{{ end }}
+
+
+{{ define "pageFooterBottom" }}
+
+</body>
+</html>
+<!-- Maybe use this later when I inline some CSS
+<noscript><link rel="stylesheet" href="/assets/css/style.css"></noscript>
+<noscript><link rel="stylesheet" href="/assets/vendor/pure-min.css"></noscript>
+-->
+{{ end }}

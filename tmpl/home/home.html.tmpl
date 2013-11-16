@@ -1,0 +1,36 @@
+{{ define "home" }}
+{{ template "pageHeader" . }}
+<h1>Home Page</h>
+<div id="testContent">
+	<h1 id="greeting">Hello</h1>
+
+	<button id="myButton">Click me!</button>
+	<div id="myDiv">Hover over me!</div>
+
+</div>
+
+
+{{ template "pageFooterTop" . }}
+
+{{ template "pageFooterBottom" . }}
+
+<script>
+		require(["dojo/on", "dojo/dom", "dojo/dom-style", "dojo/mouse", "dojo/domReady!"],
+		    function(on, dom, domStyle, mouse) {
+		        var myButton = dom.byId("myButton"),
+		            myDiv = dom.byId("myDiv");
+		 
+		        on(myButton, "click", function(evt){
+		            domStyle.set(myDiv, "backgroundColor", "blue");
+		        });
+		        on(myDiv, mouse.enter, function(evt){
+		            domStyle.set(myDiv, "backgroundColor", "red");
+		        });
+		        on(myDiv, mouse.leave, function(evt){
+		            domStyle.set(myDiv, "backgroundColor", "");
+		        });
+		});
+				
+</script>
+
+{{ end }}

@@ -1,0 +1,162 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.float-right {
+    float: right;
+} 
+
+
+body {
+    margin: 0 auto;
+    line-height: 1.3em;
+    letter-spacing: normal;
+}
+
+.l-box {
+    padding: 1em;
+}
+
+.header {
+    margin: 0 0;
+    overflow: hidden;
+    background: #DDD;
+}
+
+    .header div.pure-menu {
+        background: #DDD;
+    }
+
+    .header .pure-menu ul {
+        padding: 0.2em;
+        background: #DDD;
+        float: right;
+    }
+
+    .header .pure-menu a.pure-menu-heading {
+        color: #FFF;
+        float: left;
+        font-size: 1.2em;
+        padding-top: 7px;
+    }
+
+    .header .pure-menu a:link.pure-menu-heading { 
+        color: #666;
+        text-decoration:none;
+    }
+
+    .header .pure-menu a:visited.pure-menu-heading {
+        color: #666;
+        text-decoration:none;
+    }
+    .header .pure-menu a:hover.pure-menu-heading { 
+        color: #06e; 
+    }​
+
+    .header .pure-menu ul {
+        float: right;
+    }
+
+    .header .pure-menu ul li a:hover,
+    .header .pure-menu ul li a:focus {
+        background: #DDD;
+        border: none;
+        color: #06e;
+    }
+
+body .primary-button {
+    background: #06e;
+    color: #ccc;
+}
+
+.newItemButton {
+    background: #06e;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px;
+    display: block;
+    text-decoration: none;
+}
+
+a:hover.newItemButton {
+    color: #000;
+    background: #6cf;
+
+}
+
+
+.footer {
+    background: #ddd;
+    color: #fff;
+    padding: 0.2em 1em;
+    font-size: 0.9em;
+    overflow: hidden
+}
+    .footer .pure-menu {
+            background: #ddd;
+            float: right;
+        }
+
+            .footer .pure-menu li a:link, .footer .pure-menu li a:visited {
+                background: #ddd;
+                border: none;
+                color: #000;
+            }
+
+            .footer .pure-menu li a:hover,
+            .footer .pure-menu li a:focus {
+                background: #ddd;
+                border: none;
+                color: #06e;
+            }
+
+#contentTemplate {
+    margin: 5em 2em 2em 2em;
+    border: none;
+    letter-spacing: normal;
+}
+
+.pure-table {
+    border: none;
+}
+
+.pure-table tr td {
+    font-size: 0.9em;
+}
+
+
+th.dataColumn {
+    text-align: left;
+}
+
+td.columnRight {
+    text-align: right;
+}
+
+.bottom-nav {
+    text-align: right;
+}
+
+a#copyr {
+    display: block;
+    padding-top: 7px;
+}
+
+a:link#copyr { 
+    color: #666;
+    text-decoration:none;
+}
+a:visited#copyr {
+    color: #666;
+    text-decoration:none;
+}
+a:hover#copyr { 
+    color: #06e; 
+}​
+
+div.newItemTableBottom {
+    text-align: center;
+}
