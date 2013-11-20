@@ -36,53 +36,54 @@
 	<script src="../../assets/js/html5shiv.js"></script>
 	<script src="../../assets/js/respond.min.js"></script>
 	<![endif]-->
-
 </head>
 
 <body>
-
-  <!-- Fixed navbar -->
-<div class="content">
+<div class="bodyContainer">
 	<header class="header">
-		<div class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
-			<a href="#" class="pure-menu-heading">Auction Log</a>
+		<nav class="pure-menu pure-menu-open pure-menu-horizontal">
+			<a href="/sales/list" class="pure-menu-heading">Auction Log</a>
 			<ul>
-				<li><a href="/sales/list">Home</a></li>
-				<li><a href="#">About</a></li>
-				<li><a href="#">Contact</a></li>
+				<li><a href="/">Home</a></li>
+				<li><a href="/sales/list">Sales</a></li>
+				<li><a href="/items/list">Items</a></li>
+				<li><a href="#">Login</a></li>
 			</ul>
-		</div>
+		</nav>
 	</header>
 
 
-<div id="contentTemplate">
-{{ end }}
+	<main class="mainContent">
+	{{ end }}
 
-{{ define "pageFooterTop" }}
+	{{ define "pageFooterTop" }}
+	</main>
+
+	<footer class="footer">
+		<div class="footerContent">
+			<div class="pure-g-r">
+				<div class="pure-u-1-2">
+					<a href="#" class="copyr">&copy;Nick Sanders Productions</a>
+				</div>
+				<div class="pure-u-1-2">
+					<div class="bottom-nav">
+						<div class="pure-menu pure-menu-open pure-menu-horizontal">
+							<ul>
+								<li><a href="/about">About</a></li>
+								<li><a href="/contact">Contact</a></li>
+								<li><a href="#">News</a></li>
+							</ul>
+						</div>
+					</div>
+				</div> 
+			</div>
+		</div>
+	</footer>
 </div>
 
-<footer class="footer">
-	<div class="pure-g-r">
-		<div class="pure-u-1-2">
-			<a href="#" id="copyr" class="copyr">&copy;Nick Sanders Productions</a>
-		</div>
-		<div class="pure-u-1-2">
-			<div class="bottom-nav">
-				<nav class="pure-menu pure-menu-open pure-menu-horizontal">
-					<ul>
-						<li><a href="/about">About</a></li>
-						<li><a href="/contact">Contact</a></li>
-						<li><a href="#">News</a></li>
-					</ul>
-				</nav>
-			</div>
-		</div> 
-	</div>
-</footer>
+ 	<script src="/assets/vendor/dojoBase/dojoBase.js" data-dojo-config="async: true"></script>
 
- 	<script src="/assets/vendor/dojo/dojo.js" data-dojo-config="async: true"></script>
 {{ end }}
-
 
 {{ define "pageFooterBottom" }}
 

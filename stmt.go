@@ -1,24 +1,26 @@
 package main
 
 import (
-	"database/sql"
+	"github.com/nsan1129/unframed"
 )
 
-type stmtTexts map[dbDialogue]string
+func prepareStatements() {
+	d := unframed.Dbd.Pg
+	DB.AddStatement("createSale",
+		d,
+		`INSERT INTO "Sales" (
+			"ItemName", 
+			"SoldPrice", 
+			"Quality", 
+			"Qty", 
+			"ItemId", 
+			"Comment"
+		) VALUES ($1, $2, $3, $4, $5, $6);`,
+	)
 
-type stmtStore struct {
-	listSales  *sql.Stmt
-	createSale *sql.Stmt
-}
-
-func (s *stmtStore) init() *stmtStore {
-	s.makeStmts()
-	return s
-}
-
-func (s *stmtStore) makeStmts() {
-	listSalesT := stmtTexts{
-		dbdPg: `SELECT 
+	DB.AddStatement("listSales",
+		d,
+		`SELECT 
 			"Id",
 			COALESCE("ItemName", ''), 
 			"SoldPrice", 
@@ -27,25 +29,41 @@ func (s *stmtStore) makeStmts() {
 			COALESCE("ItemId", 0), 
 			COALESCE("Comment", '')
 		FROM "Sales" 
-		ORDER BY "Id" ASC 
-		LIMIT $1`,
-	}
-	s.storeStmt(listSalesT, &s.listSales)
+		ORDER BY "Id" DESC
+		LIMIT $1;`,
+	)
 
-	createSaleT := stmtTexts{
-		dbdPg: `insert into "Sales"
-		("ItemName", "SoldPrice", "Quality", "Qty", "ItemId", "Comment") 
-		values ($1, $2, $3, $4, $5, $6)`,
-	}
-	s.storeStmt(createSaleT, &s.createSale)
-}
+	DB.AddStatement("showSale",
+		d,
+		`SELECT 
+			"Id",
+			COALESCE("ItemName", ''), 
+			"SoldPrice", 
+			COALESCE("Quality", 0), 
+			"Qty", 
+			COALESCE("ItemId", 0), 
+			COALESCE("Comment", '')
+		FROM "Sales"
+		WHERE "Id" = $1;`,
+	)
 
-func (s *stmtStore) storeStmt(sts stmtTexts, storeField **sql.Stmt) {
-	var err error
-	*storeField, err = DB.Prepare(sts[DB.cdd])
+	DB.AddStatement("updateSale",
+		d,
+		`UPDATE "Sales" SET 
+			"ItemName" = $2, 
+			"SoldPrice" = $3, 
+			"Quality" = $4, 
+			"Qty" = $5, 
+			"ItemId" = $6, 
+			"Comment" = $7
+		WHERE "Id" = $1;`,
+	)
 
-	if err != nil {
-		panic(err)
-	}
+	DB.AddStatement("deleteSale",
+		d,
+		`DELETE FROM "Sales"
+		WHERE "Id" = $1;`,
+	)
 
+	DB.PrepareStatements()
 }

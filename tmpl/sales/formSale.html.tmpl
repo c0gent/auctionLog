@@ -1,0 +1,69 @@
+{{ define "formSale" }}
+{{ template "pageHeader" . }}
+
+<!--
+	<% if @sale.errors.any? %>
+		<div id="errorExplanaation">
+			<h2><%= pluralize(@sale.errors.count, "error") %> prohibited this sale from being saved: 
+			</h2>
+			<ul>
+				<% @sale.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+-->
+{{ $s := (index .Sales 0) }}
+<form class = "pure-form" role="form" accept-charset="UTF-8" action="/sale/save" method="post">
+	<fieldset class="pure-group">
+		<input name="Id" type="number" value="{{ or $s.Id "" }}" class="pure-input-1-2" placeholder="Id:" readonly>
+	</fieldset>
+	<fieldset class="pure-group">
+		<input name="ItemName" type="text" value="{{ or $s.ItemName "" }}" class="pure-input-1-2" placeholder="Item Name:">
+		<input name="Quality" type="number" value="{{ or $s.Quality "" }}" class="pure-input-1-2" placeholder="Quality:">
+		<input name="Qty" type="number" value="{{ or $s.Qty "" }}" class="pure-input-1-2" placeholder="Quantity:">
+		<input name="SoldPrice" type="number" value="{{ or $s.SoldPrice "" }}" class="pure-input-1-2" placeholder="Price:">
+	</fieldset>
+	<a href="/sales/list" class="pure-button pure-input-1-4">Cancel</a>
+	<input type="submit" class="pure-button pure-input-1-4 pure-button-primary" value="Save Sale" />
+
+	<!--<fieldset>
+		<div>
+			<input name="utf8" type="hidden" value="&#x2713;" />
+			<input name="authenticity_token" type="hidden" value="jFkMHq3LKkY+oh1j8ZBYUJxFCPNNHMXdXrMmffG7SU4=" />
+		</div>-->
+		<!--<div class="pure-control-group">
+			<label for="Id">Id:</label>
+			<input name="Id" readonly="readonly" type="number" />
+		</div>
+		<div class="pure-control-group">
+			<label for="Quantity">Quantity:</label>
+			<input name="Qty" type="number" value="1" />
+		</div>
+		<div class="pure-control-group">
+			<label for="ItemName">Item name:</label>
+			<input  name="ItemName" size="30" type="text" />
+		</div>
+		<div class="pure-control-group">
+			<label for="SoldPrice">Sold Price:</label>
+			<input name="SoldPrice" type="number" />
+		</div>
+		<div class="pure-control-group">
+			<label for="Quality">Quality:</label>
+			<input name="Quality" type="number" />
+		</div>
+		<p>
+			<button class="pure-button pure-button-primary" name= "SubmitButton" type="submit" value="Create Sale" /> 
+			<form role="form" action="/sales" class="button_to" method="get">
+				<div class="pure-control-group">
+					<button class="pure-button" type="submit" value="Cancel" />
+				</div>
+			</form>
+		</p>
+	</fieldset>-->
+</form>
+
+{{ template "pageFooterTop" . }}
+{{ template "pageFooterBottom" . }}
+{{ end }}

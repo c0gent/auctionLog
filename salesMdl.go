@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/nsan1129/auctionLog/log"
+	"database/sql"
+	"github.com/nsan1129/unframed"
 )
 
 type sale struct {
@@ -14,42 +15,54 @@ type sale struct {
 	Comment   string
 }
 
-type salesMdl struct {
+type salesAdapter struct {
+	unframed.DataAdapter
 	Sales []*sale
 }
 
-func (s *salesMdl) getList() []*sale {
+func (s *salesAdapter) list() []*sale {
 
-	rows, err := DB.stmts.listSales.Query(20)
-	if err != nil {
-		panic(err)
-	}
-
+	rows := s.Query(DB.Stmts["listSales"], 20)
 	defer rows.Close()
 
 	for rows.Next() {
-		sa := new(sale)
-		err := rows.Scan(&sa.Id, &sa.ItemName, &sa.SoldPrice, &sa.Quality, &sa.Qty, &sa.ItemId, &sa.Comment)
-		if err != nil {
-			log.Error(err)
-		}
-		s.Sales = append(s.Sales, sa)
+		sa := s.newSale()
+		s.ScanRows(rows, &sa.Id, &sa.ItemName, &sa.SoldPrice, &sa.Quality, &sa.Qty, &sa.ItemId, &sa.Comment)
 	}
-
 	return s.Sales
 }
 
-func (s *salesMdl) commit() {
-	for _, sa := range s.Sales {
-		_, err := DB.stmts.createSale.Exec(sa.ItemName, sa.SoldPrice, sa.Quality, sa.Qty, sa.ItemId, sa.Comment)
-		if err != nil {
-			log.Error(err)
-		}
+func (s *salesAdapter) crazyList() []*sale {
+	scanner := func(rows *sql.Rows) {
+		sa := s.newSale()
+		s.ScanRows(rows, &sa.Id, &sa.ItemName, &sa.SoldPrice, &sa.Quality, &sa.Qty, &sa.ItemId, &sa.Comment)
+	}
+	s.CrazyQueryScan(scanner, DB.Stmts["listSales"], 20)
+	return s.Sales
+}
+
+func (s *salesAdapter) show(id int) *salesAdapter {
+	row := s.QueryRow(DB.Stmts["showSale"], id)
+
+	sa := s.newSale()
+	s.ScanRow(row, &sa.Id, &sa.ItemName, &sa.SoldPrice, &sa.Quality, &sa.Qty, &sa.ItemId, &sa.Comment)
+	return s
+}
+
+func (s *salesAdapter) delete(id int) {
+	s.Exec(DB.Stmts["deleteSale"], id)
+}
+
+func (s *salesAdapter) save(sa *sale) {
+	if sa.Id == 0 {
+		s.Exec(DB.Stmts["createSale"], sa.ItemName, sa.SoldPrice, sa.Quality, sa.Qty, sa.ItemId, sa.Comment)
+	} else {
+		s.Exec(DB.Stmts["updateSale"], sa.Id, sa.ItemName, sa.SoldPrice, sa.Quality, sa.Qty, sa.ItemId, sa.Comment)
 	}
 }
 
-func (s *salesMdl) newSale() *sale {
-	ns := new(sale)
-	s.Sales = append(s.Sales, ns)
-	return ns
+func (s *salesAdapter) newSale() *sale {
+	sa := new(sale)
+	s.Sales = append(s.Sales, sa)
+	return sa
 }

@@ -1,9 +1,9 @@
 {{ define "listSales" }}
 {{ template "pageHeader" . }}
-	<table class="pure-table pure-table-horizontal" id="listSalesTable">
+	<table class="pure-table pure-table-horizontal" id="listSalesTable" class="listSalesTable">
 		<tr>
 			<td colspan=9>
-				<a href="/sale/compose" class='newItemButton'>
+				<a href="/sale/form/0" class='pure-button newItemButton'>
 			    	<i class="fa fa-plus fa-fw"></i>
 			    	New Sale
 				</a>
@@ -41,18 +41,35 @@
 -->
 
 <script>
-require(["dojo/dom-attr", "dojo/on", "dojo/dom", "dojo/query", "dojo/domReady!"],
-	    function(domAttr, on, dom) {
+require(["dojo/request", "dojo/dom-construct", "dojo/dom-attr", "dojo/on", "dojo/dom", "dojo/query", "dojo/domReady!"],
+	    function(request, domConstruct, domAttr, on, dom) {
 	 
-	        var myObject = {
-	            id: "myObject",
+	        var editObject = {
+	            id: "editObject",
 	            onClick: function(evt){
-	                alert("saleId: " + domAttr.get(evt.target, "data-sale-id"));
+	            	var saleId = domAttr.get(evt.target, "data-sale-id");
+	            	window.location.assign("/sale/form/" + saleId);
 	            }
 	        };
+
+	        var deleteObject = {
+	            id: "deleteObject",
+	            onClick: function(evt){
+	            	var saleId = domAttr.get(evt.target, "data-sale-id");
+	            	var r = confirm("Are you sure you want to delete sale #" + saleId);
+	                if (r) {
+	                	request.post("/sale/delete", {
+	                		data: {Id: saleId}
+	                	}).then(function(response){
+			                domConstruct.destroy(evt.target.parentNode.parentNode)
+			            });
+	                }
+	            }
+	        };
+
 	        var table = dom.byId("listSalesTable");
-	        on(table, ".salesTableEditButton:click", myObject.onClick);
-	        on(table, ".salesTableDeleteButton:click", myObject.onClick);
+	        on(table, ".salesTableEditButton:click", editObject.onClick);
+	        on(table, ".salesTableDeleteButton:click", deleteObject.onClick);
 
 	        //query(".salesTableEditButton").on("click", myObject.onClick);
 	        //query(".salesTableDeleteButton").on("click", lang.hitch(myObject, "onClick"));
