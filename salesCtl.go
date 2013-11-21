@@ -1,28 +1,28 @@
 package main
 
 import (
-	"github.com/nsan1129/auctionLog/log"
 	"github.com/nsan1129/unframed"
 	"net/http"
 )
 
 func listSales(w http.ResponseWriter, r *http.Request) {
-	sm := new(salesAdapter).crazyList()
+	sm := new(salesAdapter).list()
 
-	exeTmpl(w, "listSales", sm)
+	net.ExeTmpl(w, "listSales", sm)
 }
 
 func formSale(w http.ResponseWriter, r *http.Request) {
-	id := unframed.Atoi(r.URL.Query().Get(":Id"))
+
+	id := unframed.QueryUrl(":Id", r)
 
 	sa := new(salesAdapter)
 
 	if id == 0 {
 		_ = sa.newSale()
-		exeTmpl(w, "formSale", sa)
+		net.ExeTmpl(w, "formSale", sa)
 	} else {
 		sa.show(id)
-		exeTmpl(w, "formSale", sa)
+		net.ExeTmpl(w, "formSale", sa)
 	}
 }
 
@@ -30,14 +30,7 @@ func saveSale(w http.ResponseWriter, r *http.Request) {
 
 	sa := new(sale)
 
-	err := r.ParseForm()
-	if err != nil {
-		log.Error(err)
-	}
-	err = DB.Decoder.Decode(sa, r.PostForm)
-	if err != nil {
-		log.Error(err)
-	}
+	net.DecodeForm(sa, r)
 
 	new(salesAdapter).save(sa)
 
@@ -46,17 +39,10 @@ func saveSale(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteSale(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		log.Error(err)
-	}
 
 	var sa struct{ Id int }
 
-	err = DB.Decoder.Decode(&sa, r.PostForm)
-	if err != nil {
-		log.Error(err)
-	}
+	net.DecodeForm(&sa, r)
 
 	ss := new(salesAdapter)
 	ss.delete(sa.Id)

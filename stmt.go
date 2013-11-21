@@ -6,7 +6,7 @@ import (
 
 func prepareStatements() {
 	d := unframed.Dbd.Pg
-	DB.AddStatement("createSale",
+	db.AddStatement("createSale",
 		d,
 		`INSERT INTO "Sales" (
 			"ItemName", 
@@ -18,7 +18,7 @@ func prepareStatements() {
 		) VALUES ($1, $2, $3, $4, $5, $6);`,
 	)
 
-	DB.AddStatement("listSales",
+	db.AddStatement("listSales",
 		d,
 		`SELECT 
 			"Id",
@@ -33,7 +33,7 @@ func prepareStatements() {
 		LIMIT $1;`,
 	)
 
-	DB.AddStatement("showSale",
+	db.AddStatement("showSale",
 		d,
 		`SELECT 
 			"Id",
@@ -47,7 +47,7 @@ func prepareStatements() {
 		WHERE "Id" = $1;`,
 	)
 
-	DB.AddStatement("updateSale",
+	db.AddStatement("updateSale",
 		d,
 		`UPDATE "Sales" SET 
 			"ItemName" = $2, 
@@ -59,11 +59,11 @@ func prepareStatements() {
 		WHERE "Id" = $1;`,
 	)
 
-	DB.AddStatement("deleteSale",
+	db.AddStatement("deleteSale",
 		d,
 		`DELETE FROM "Sales"
 		WHERE "Id" = $1;`,
 	)
 
-	DB.PrepareStatements()
+	db.PrepareStatements()
 }

@@ -6,20 +6,48 @@ import (
 	"github.com/nsan1129/unframed"
 )
 
-var DB *unframed.DbHandler
+var db *unframed.DbHandle
+var net *unframed.NetHandle
 
 func main() {
 
-	gob.Register(&sale{})
+	db = unframed.NewDB("postgres", "user=postgres password=postgres dbname=auction_log_dev sslmode=disable")
+	defer db.Close()
 
-	DB = unframed.NewDB("postgres", "user=postgres password=postgres dbname=auction_log_dev sslmode=disable")
-	defer DB.Close()
+	net = unframed.NewNet()
 
 	prepareStatements()
 
 	loadTemplates()
 
 	route() //Set up routes and begin serving
+}
+
+func loadTemplates() {
+	net.LoadTemplates(
+		"tmpl/_base.html.tmpl",
+		"tmpl/sales/listSales.html.tmpl",
+		"tmpl/sales/formSale.html.tmpl",
+		"tmpl/home/home.html.tmpl",
+	)
+}
+
+func route() {
+
+	gob.Register(&sale{})
+
+	r := net
+
+	r.Get("/sales/list", listSales)
+	r.Get("/sale/form/{Id}", formSale)
+	r.Post("/sale/save", saveSale)
+	r.Post("/sale/delete", deleteSale)
+	r.Dir("assets/")
+	r.Dir("public/")
+
+	r.Get("/", getHome)
+
+	r.Serve("80")
 }
 
 /* TO DO
