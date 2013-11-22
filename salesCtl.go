@@ -1,32 +1,54 @@
 package main
 
 import (
-	"github.com/nsan1129/unframed"
 	"net/http"
 )
 
-func listSales(w http.ResponseWriter, r *http.Request) {
-	sm := new(salesAdapter).list()
+func salesReg() {
+	salesTemplates()
+	salesRoutes()
+	salesStmts()
 
-	net.ExeTmpl(w, "listSales", sm)
+	net.RegType(&item{})
 }
 
-func formSale(w http.ResponseWriter, r *http.Request) {
+func salesTemplates() {
+	net.TemplateFiles(
+		"tmpl/sales/sales_list.html.tmpl",
+		"tmpl/sales/sales_form.html.tmpl",
+	)
+}
 
-	id := unframed.QueryUrl(":Id", r)
+func salesRoutes() {
+	sr := net.Subrouter("/sales")
+	sr.Get("/list", salesList)
+	sr.Get("/form/{Id}", salesForm)
+	sr.Post("/save", salesSave)
+	sr.Post("/delete", salesDelete)
+}
+
+func salesList(w http.ResponseWriter, r *http.Request) {
+	sm := new(salesAdapter).list()
+
+	net.ExeTmpl(w, "salesList", sm)
+}
+
+func salesForm(w http.ResponseWriter, r *http.Request) {
+
+	id := net.QueryUrl(":Id", r)
 
 	sa := new(salesAdapter)
 
 	if id == 0 {
 		_ = sa.newSale()
-		net.ExeTmpl(w, "formSale", sa)
+		net.ExeTmpl(w, "salesForm", sa)
 	} else {
 		sa.show(id)
-		net.ExeTmpl(w, "formSale", sa)
+		net.ExeTmpl(w, "salesForm", sa)
 	}
 }
 
-func saveSale(w http.ResponseWriter, r *http.Request) {
+func salesSave(w http.ResponseWriter, r *http.Request) {
 
 	sa := new(sale)
 
@@ -38,7 +60,7 @@ func saveSale(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func deleteSale(w http.ResponseWriter, r *http.Request) {
+func salesDelete(w http.ResponseWriter, r *http.Request) {
 
 	var sa struct{ Id int }
 

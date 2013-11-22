@@ -1,0 +1,36 @@
+{{ define "salesForm" }}
+{{ template "pageHeader" . }}
+{{ $s := (index .Data.Sales 0) }}
+
+<form class = "pure-form pure-form-aligned" action="/sales/save" method="post">
+	<fieldset>
+		<div class="pure-control-group">
+			<label for="Id">Id:</label>
+			<input name="Id" type="number" value="{{ or $s.Id "" }}" class="pure-input-1-3" placeholder="Id" readonly>
+		</div>
+	</fieldset>
+	<fieldset>
+		<div class="pure-control-group">
+			<label for="ItemName">Item Name:</label>
+			<input name="ItemName" type="text" value="{{ or $s.ItemName "" }}" class="pure-input-1-3" placeholder="Item Name">
+		</div>
+		<div class="pure-control-group">
+			<label for="Quality">Quality:</label>
+			<input name="Quality" type="number" value="{{ or $s.Quality "" }}" class="pure-input-1-3" placeholder="Quality">
+		</div>
+		<div class="pure-control-group">
+			<label for="Qty">Quantity:</label>
+			<input name="Qty" type="number" value="{{ or $s.Qty "" }}" class="pure-input-1-3" placeholder="Quantity">
+		</div>
+		<div class="pure-control-group">
+			<label for="SoldPrice">Sold Price:</label>
+			<input name="SoldPrice" type="number" value="{{ or $s.SoldPrice "" }}" class="pure-input-1-3" placeholder="Price">
+		</div>
+	</fieldset>
+	<a href="/sales/list" class="pure-button pure-input-1-4">Cancel</a>
+	<input type="submit" class="pure-button pure-input-1-4 pure-button-primary" value="Save Sale" />
+</form>
+
+{{ template "pageFooterTop" . }}
+{{ template "pageFooterBottom" . }}
+{{ end }}

@@ -1,0 +1,83 @@
+{{ define "salesList" }}
+{{ template "pageHeader" . }}
+	<table class="pure-table pure-table-horizontal listTable" id="listSalesTable">
+		<tr>
+			<td colspan=9>
+				<a href="/sales/form/0" class='pure-button newItemButton'>
+			    	<i class="fa fa-plus fa-fw"></i>
+			    	New Sale
+				</a>
+			</td>
+		</tr>
+		<tr>
+			<th class='dataColumn'>Qty.</th>
+			<th class='dataColumn'>Item Name</th>
+			<th class='dataColumn'>Sold Price</th>
+			<th class='dataColumn'>Quality</th>
+			<th class='dataColumn'>Id</th>
+			<th class='dataColumn'>   </th>
+			<th class='buttonColumn'></th>
+			<th class='buttonColumn'></th>
+		</tr>
+		{{ range .Data.Sales }}
+		<tr>
+			<td class='dataColumn columnRight'>{{ .Qty }}</td>
+			<td class='dataColumn'>{{ .ItemName }}</td>
+			<td class='dataColumn columnRight'>{{.SoldPrice}}</td>
+			<td class='dataColumn columnRight'> {{.Quality}} </td>
+			<td class='dataColumn columnRight'>{{.Id}} </td>
+			<td class='dataColumn'></th>
+			<td class='buttonColumn tableEditButton' data-sale-id="{{.Id}}"><i class="fa fa-pencil-square-o fa-lg" data-sale-id="{{.Id}}"/></td>
+			<td class='buttonColumn tableDeleteButton' data-sale-id="{{.Id}}"><i class="fa fa-times fa-lg" data-sale-id="{{.Id}}"/></td>
+		</tr>
+		{{ end }}
+	</table>
+	
+
+{{ template "pageFooterTop" . }}
+
+<!-- **Gonna Inline this**
+	<script src="/assets/js/listSales.js" data-dojo-config="async: true"></script>
+-->
+
+
+<script>
+require(["dojo/request", "dojo/dom-construct", "dojo/dom-attr", "dojo/on", "dojo/dom", "dojo/query", "dojo/domReady!"],
+	    function(request, domConstruct, domAttr, on, dom) {
+	 
+	        var editObject = {
+	            id: "editObject",
+	            onClick: function(evt){
+	            	var saleId = domAttr.get(evt.target, "data-sale-id");
+	            	window.location.assign("/sales/form/" + saleId);
+	            }
+	        };
+
+	        var deleteObject = {
+	            id: "deleteObject",
+	            onClick: function(evt){
+	            	var saleId = domAttr.get(evt.target, "data-sale-id");
+	            	var r = confirm("Are you sure you want to delete sale #" + saleId);
+	                if (r) {
+	                	request.post("/sales/delete", {
+	                		data: {Id: saleId}
+	                	}).then(function(response){
+			                domConstruct.destroy(evt.target.parentNode)
+			            });
+	                }
+	            }
+	        };
+
+	        var table = dom.byId("listSalesTable");
+	        on(table, ".tableEditButton:click", editObject.onClick);
+	        on(table, ".tableDeleteButton:click", deleteObject.onClick);
+
+	        //query(".salesTableEditButton").on("click", myObject.onClick);
+	        //query(".salesTableDeleteButton").on("click", lang.hitch(myObject, "onClick"));
+	 
+	});
+</script>
+
+
+{{ template "pageFooterBottom" . }}
+{{ end }}

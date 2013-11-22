@@ -1,0 +1,48 @@
+{{ define "itemsForm" }}
+{{ template "pageHeader" . }}
+{{ $s := (index .Data.Items 0) }}
+
+<form class = "pure-form pure-form-aligned" role="form" accept-charset="UTF-8" action="/items/save" method="post">
+	<fieldset>
+		<div class="pure-control-group">
+			<label for="Id">Id:</label>
+			<input name="Id" type="number" value="{{ or $s.Id "" }}" class="pure-input-1-3" placeholder="Id" readonly>
+		</div>
+	</fieldset>
+	<fieldset>
+		<div class="pure-control-group">
+			<label for="Name">Name:</label>
+			<input name="Name" type="text" value="{{ or $s.Name "" }}" class="pure-input-1-3" placeholder="Item Name">
+		</div>
+		<div class="pure-control-group">
+			<label for="QtySold">Qty. Sold:</label>
+			<input name="QtySold" type="number" value="{{ or $s.QtySold "" }}" class="pure-input-1-3" placeholder="Quantity Sold">
+		</div>
+		<div class="pure-control-group">
+			<label for="HighestPrice">Highest Price:</label>
+			<input name="HighestPrice" type="number" value="{{ or $s.HighestPrice "" }}" class="pure-input-1-3" placeholder="Highest Sold Price">
+		</div>
+		<div class="pure-control-group">
+			<label for="LowestPrice">Lowest Price:</label>
+			<input name="LowestPrice" type="number" value="{{ or $s.LowestPrice "" }}" class="pure-input-1-3" placeholder="Lowest Sold Price">
+		</div>
+		<div class="pure-control-group">
+			<label for="AvgPrice">Average Price:</label>
+			<input name="AvgPrice" type="number" value="{{ or $s.AvgPrice "" }}" class="pure-input-1-3" placeholder="Average Sold Price">
+		</div>
+		<div class="pure-control-group">
+			<label for="CreatedAt">Created:</label>
+			<input type="text" value="{{ (.Net.PrettyDate $s.CreatedAt 2) }}" class="pure-input-1-3" placeholder="Created" readonly>
+		</div>
+		<div class="pure-control-group">
+			<label for="UpdatedAt">Updated:</label>
+			<input type="text" value="{{ (.Net.PrettyDate $s.UpdatedAt 2) }}" class="pure-input-1-3" placeholder="Updated" readonly>
+		</div>	
+	</fieldset>
+	<a href="/items/list" class="pure-button pure-input-1-4">Cancel</a>
+	<input type="submit" class="pure-button pure-input-1-4 pure-button-primary" value="Save Item" />
+</form>
+
+{{ template "pageFooterTop" . }}
+{{ template "pageFooterBottom" . }}
+{{ end }}

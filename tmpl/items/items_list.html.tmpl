@@ -1,0 +1,88 @@
+{{ define "itemsList" }}
+{{ template "pageHeader" . }}
+{{ $d := . }}
+
+<table class="pure-table pure-table-horizontal listTable" id="listItemsTable">
+	
+	<tr>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Sold</th>
+		<th>Highest</th>
+		<th>Lowest</th>
+		<th>Avg</th>
+		<th>Created At</th>
+		<th>Updated At</th>
+		<th>   </th>
+		<th> </th>
+		<th> </th>
+		
+	</tr>
+
+	<tr>
+		<td colspan=11>
+			<a href="/items/form/0" class='pure-button newItemButton'>
+		    	<i class="fa fa-plus fa-fw"></i>
+		    	New Item
+			</a>
+		</td>
+	</tr> 
+	
+	{{ range .Data.Items }}
+	<tr>
+		<td class='columnRight'>{{ .Id }}</td>
+		<td >{{ .Name }}</td>
+		<td class='columnRight'>{{.QtySold}}</td>
+		<td class='columnRight'>{{.HighestPrice}}</td>
+		<td class='columnRight'>{{.LowestPrice}}</td>
+		<td class='columnRight'>{{.AvgPrice}}</td>
+		<td class='columnRight'> {{ ($d.Net.PrettyDate .CreatedAt 1) }} </td>
+		<td class='columnRight'> {{ ($d.Net.PrettyDate .UpdatedAt 1) }} </td>
+		<td></th>
+		<td class='buttonColumn tableEditButton' data-item-id="{{.Id}}"><i class="fa fa-pencil-square-o fa-lg" data-item-id="{{.Id}}"/></td>
+		<td class='buttonColumn tableDeleteButton' data-item-id="{{.Id}}"><i class="fa fa-times fa-lg" data-item-id="{{.Id}}"/></td>
+	</tr>
+	{{ end }}
+</table>
+	
+
+{{ template "pageFooterTop" . }}
+
+<script>
+require(["dojo/request", "dojo/dom-construct", "dojo/dom-attr", "dojo/on", "dojo/dom", "dojo/query", "dojo/domReady!"],
+
+	function(request, domConstruct, domAttr, on, dom) {
+
+	    var editObject = {
+	        id: "editObject",
+	        onClick: function(evt){
+	        	var itemId = domAttr.get(evt.target, "data-item-id");
+	        	window.location.assign("/items/form/" + itemId);
+	        }
+	    };
+
+	    var deleteObject = {
+	        id: "deleteObject",
+	        onClick: function(evt){
+	        	var itemId = domAttr.get(evt.target, "data-item-id");
+	        	var r = confirm("Are you sure you want to delete item #" + itemId);
+	            if (r) {
+	            	request.post("item/delete", {
+	            		data: {Id: itemId}
+	            	}).then(function(response){
+		                domConstruct.destroy(evt.target.parentNode)
+		            });
+	            }
+	        }
+	    };
+
+	    var table = dom.byId("listItemsTable");
+	    on(table, ".tableEditButton:click", editObject.onClick);
+	    on(table, ".tableDeleteButton:click", deleteObject.onClick);
+	}
+);
+</script>
+
+
+{{ template "pageFooterBottom" . }}
+{{ end }}

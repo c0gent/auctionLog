@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/gob"
 	_ "github.com/bmizerany/pq"
 	"github.com/nsan1129/unframed"
 )
@@ -16,38 +15,28 @@ func main() {
 
 	net = unframed.NewNet()
 
-	prepareStatements()
+	registerControllers()
 
-	loadTemplates()
+	db.PrepareStatements()
+	net.LoadTemplates()
 
 	route() //Set up routes and begin serving
 }
 
-func loadTemplates() {
-	net.LoadTemplates(
-		"tmpl/_base.html.tmpl",
-		"tmpl/sales/listSales.html.tmpl",
-		"tmpl/sales/formSale.html.tmpl",
-		"tmpl/home/home.html.tmpl",
-	)
+func registerControllers() {
+	itemsReg()
+	salesReg()
+	staticReg()
 }
 
 func route() {
 
-	gob.Register(&sale{})
+	net.Dir("assets/")
+	net.Dir("public/")
 
-	r := net
+	net.Get("/", getHome)
 
-	r.Get("/sales/list", listSales)
-	r.Get("/sale/form/{Id}", formSale)
-	r.Post("/sale/save", saveSale)
-	r.Post("/sale/delete", deleteSale)
-	r.Dir("assets/")
-	r.Dir("public/")
-
-	r.Get("/", getHome)
-
-	r.Serve("80")
+	net.Serve("80")
 }
 
 /* TO DO
