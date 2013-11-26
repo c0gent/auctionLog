@@ -20,7 +20,7 @@ func main() {
 	db.PrepareStatements()
 	net.LoadTemplates()
 
-	route() //Set up routes and begin serving
+	route()
 }
 
 func registerControllers() {
