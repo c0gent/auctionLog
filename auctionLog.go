@@ -8,9 +8,12 @@ import (
 var db *unframed.DbHandle
 var net *unframed.NetHandle
 
-func main() {
+var cfgFile string = "/etc/auctionLog/config.json"
 
-	db = unframed.NewDB("postgres", "user=postgres password=postgres dbname=auction_log_dev sslmode=disable")
+func main() {
+	cfg := unframed.ReadConfig(cfgFile)
+
+	db = unframed.NewDB(cfg.DbType, cfg.ConnStr)
 	defer db.Close()
 
 	net = unframed.NewNet()
@@ -20,7 +23,11 @@ func main() {
 	db.PrepareStatements()
 	net.LoadTemplates()
 
-	route()
+	route(cfg.ListenPort)
+}
+
+func writeConfig() {
+	unframed.WriteConfig(&unframed.Config{"postgres", "user=postgres password=postgres dbname=auction_log_dev sslmode=disable", "80"}, cfgFile)
 }
 
 func registerControllers() {
@@ -29,14 +36,14 @@ func registerControllers() {
 	staticReg()
 }
 
-func route() {
+func route(port string) {
 
 	net.Dir("assets/")
 	net.Dir("public/")
 
 	net.Get("/", getHome)
 
-	net.Serve("80")
+	net.Serve(port)
 }
 
 /* TO DO
