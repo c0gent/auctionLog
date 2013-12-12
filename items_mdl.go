@@ -26,6 +26,11 @@ func (a *itemsAdapter) list() *itemsAdapter {
 	return a
 }
 
+func (a *itemsAdapter) listBox() *itemsAdapter {
+	a.Query(a.newItem, db.Stmts["listItems"], 100)
+	return a
+}
+
 func (a *itemsAdapter) newItem() (inf interface{}) {
 	n := new(item)
 	a.Items = append(a.Items, n)

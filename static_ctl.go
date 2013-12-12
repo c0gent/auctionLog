@@ -6,6 +6,8 @@ import (
 
 func staticReg() {
 	ptStatic()
+
+	prStatic()
 }
 
 func ptStatic() {
@@ -13,6 +15,13 @@ func ptStatic() {
 		"tmpl/_base.html.tmpl",
 		"tmpl/static/home.html.tmpl",
 	)
+}
+
+func prStatic() {
+	net.Dir("assets/")
+	net.Dir("public/")
+
+	net.Get("/", getHome)
 }
 
 type myData struct {

@@ -38,14 +38,14 @@ func salesForm(w http.ResponseWriter, r *http.Request) {
 	id := net.QueryUrl(":Id", r)
 
 	sa := new(salesAdapter)
+	ia := new(itemsAdapter).listBox()
 
 	if id == 0 {
 		_ = sa.newSale()
-		net.ExeTmpl(w, "salesForm", sa)
 	} else {
 		sa.show(id)
-		net.ExeTmpl(w, "salesForm", sa)
 	}
+	net.ExeTmpl(w, "salesForm", sa, ia)
 }
 
 func salesSave(w http.ResponseWriter, r *http.Request) {

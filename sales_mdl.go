@@ -2,16 +2,19 @@ package main
 
 import (
 	"github.com/nsan1129/unframed"
+	"time"
 )
 
 type sale struct {
 	Id        int
-	ItemName  string
 	SoldPrice int
 	Quality   int
 	Qty       int
 	ItemId    int
 	Comment   string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	ItemName  string
 }
 
 type salesAdapter struct {
@@ -35,9 +38,9 @@ func (s *salesAdapter) delete(id int) {
 
 func (s *salesAdapter) save(sa *sale) {
 	if sa.Id == 0 {
-		s.Exec(db.Stmts["createSale"], sa.ItemName, sa.SoldPrice, sa.Quality, sa.Qty, sa.ItemId, sa.Comment)
+		s.Exec(db.Stmts["createSale"], sa.SoldPrice, sa.Quality, sa.Qty, sa.ItemId, sa.Comment)
 	} else {
-		s.Exec(db.Stmts["updateSale"], sa.Id, sa.ItemName, sa.SoldPrice, sa.Quality, sa.Qty, sa.ItemId, sa.Comment)
+		s.Exec(db.Stmts["updateSale"], sa.Id, sa.SoldPrice, sa.Quality, sa.Qty, sa.ItemId, sa.Comment)
 	}
 }
 

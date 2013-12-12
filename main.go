@@ -8,7 +8,7 @@ import (
 var db *unframed.DbHandle
 var net *unframed.NetHandle
 
-var cfgFile string = "/etc/auctionLog/config.json"
+var cfgFile string = "/etc/auction-log/config.json"
 
 func main() {
 	cfg := unframed.ReadConfig(cfgFile)
@@ -37,11 +37,6 @@ func registerControllers() {
 }
 
 func route(port string) {
-
-	net.Dir("assets/")
-	net.Dir("public/")
-
-	net.Get("/", getHome)
 
 	net.Serve(port)
 }

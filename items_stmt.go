@@ -32,14 +32,7 @@ func itemsStmts() {
 	db.AddStatement("showItem",
 		d,
 		`SELECT
-			id,
-			name,
-			qty_sold,
-			highest_price,
-			lowest_price,
-			avg_price,
-			created_at,
-			updated_at
+			*
 		FROM items
 		WHERE id = $1;`,
 	)

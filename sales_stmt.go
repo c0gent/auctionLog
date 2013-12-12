@@ -10,53 +10,45 @@ func salesStmts() {
 	db.AddStatement("createSale",
 		d,
 		`INSERT INTO sales (
-			item_name, 
 			sold_price, 
 			quality, 
 			qty, 
 			item_id, 
 			comment
-		) VALUES ($1, $2, $3, $4, $5, $6);`,
+		) VALUES ($1, $2, $3, $4, $5);`,
 	)
 
 	db.AddStatement("listSales",
 		d,
 		`SELECT 
-			id,
-			item_name, 
-			sold_price, 
-			COALESCE(quality, 0), 
-			qty, 
-			item_id, 
-			COALESCE(comment, '')
-		FROM sales 
-		ORDER BY id DESC
+			s.*,
+			i.name as item_name
+
+		FROM sales s, items i
+		WHERE i.id = s.item_id
+		ORDER BY s.id DESC
 		LIMIT $1;`,
 	)
 
 	db.AddStatement("showSale",
 		d,
 		`SELECT 
-			id,
-			COALESCE(item_name, ''), 
-			sold_price, 
-			COALESCE(quality, 0), 
-			qty, 
-			COALESCE(item_id, 0), 
-			COALESCE(comment, '')
-		FROM sales
-		WHERE id = $1;`,
+			s.*,
+			i.name as item_name
+		FROM sales s, items i
+		WHERE i.id = s.item_id 
+		AND s.id = $1;`,
 	)
 
 	db.AddStatement("updateSale",
 		d,
 		`UPDATE sales SET 
-			item_name = $2, 
-			sold_price = $3, 
-			quality = $4, 
-			qty = $5, 
-			item_id = $6, 
-			comment = $7
+			sold_price = $2, 
+			quality = $3, 
+			qty = $4, 
+			item_id = $5, 
+			comment = $6,
+			updated_at = now()
 		WHERE id = $1;`,
 	)
 

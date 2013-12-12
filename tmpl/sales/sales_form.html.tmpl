@@ -1,8 +1,11 @@
 {{ define "salesForm" }}
 {{ template "pageHeader" . }}
 {{ $s := (index .Data.Sales 0) }}
+{{ $i := (index .Sdata 0).Items}}
+{{ $net := .Net }}
 
-<form class = "pure-form pure-form-aligned" action="/sales/save" method="post">
+
+<form class="pure-form pure-form-aligned" id="salesForm" action="/sales/save" method="post">
 	<fieldset>
 		<div class="pure-control-group">
 			<label for="Id">Id:</label>
@@ -11,8 +14,12 @@
 	</fieldset>
 	<fieldset>
 		<div class="pure-control-group">
-			<label for="ItemName">Item Name:</label>
-			<input name="ItemName" type="text" value="{{ or $s.ItemName "" }}" class="pure-input-1-3" placeholder="Item Name">
+			<label for="ItemId">Item Name:</label>
+			<select name="ItemId" size="5" form="salesForm" value="{{ or $s.ItemId "" }}" class="pure-input-1-3" required>
+				{{ range $i }}
+					<option value="{{ .Id }}" {{if ($net.Compare $s.ItemId .Id)}}selected{{end}}>{{ .Name }}</option>
+				{{ end }}
+			</select>
 		</div>
 		<div class="pure-control-group">
 			<label for="Quality">Quality:</label>
